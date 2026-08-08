@@ -37,7 +37,19 @@ async function run() {
 
             // get product
             app.get("/products", async (req, res) => {
-                  const cursor = products_collection.find();
+                  const project_fields = {
+                        title: 1,
+                        price_min: 1,
+                        price_max: 1,
+                        image: 1,
+                  };
+                  const cursor = products_collection
+                        .find()
+                        .sort({ price_min: -1 })
+                        .skip(2)
+                        .limit(5)
+                        .project(project_fields);
+                  // const cursor = products_collection.find()2
                   const result = await cursor.toArray();
                   res.send(result);
             });
