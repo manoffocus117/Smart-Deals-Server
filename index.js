@@ -43,13 +43,22 @@ async function run() {
                         price_max: 1,
                         image: 1,
                   };
-                  const cursor = products_collection
-                        .find()
-                        .sort({ price_min: -1 })
-                        .skip(2)
-                        .limit(5)
-                        .project(project_fields);
-                  // const cursor = products_collection.find()2
+                  // const cursor = products_collection
+                  //       .find()
+                  //       .sort({ price_min: -1 })
+                  //       .skip(2)
+                  //       .limit(5)
+                  //       .project(project_fields);
+
+                  console.log(req.query);
+                  const email = req.query.email;
+
+                  const query = {};
+                  if (email) {
+                        query.email = email;
+                  }
+
+                  const cursor = products_collection.find(query);
                   const result = await cursor.toArray();
                   res.send(result);
             });
