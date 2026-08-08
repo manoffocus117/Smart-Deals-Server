@@ -43,6 +43,33 @@ async function run() {
                   res.send(result);
             });
 
+            // update product
+            app.patch("/products/:id", async (req, res) => {
+                  const id = req.params.id;
+                  const updated_product = req.body;
+                  const query = { _id: new ObjectId(id) };
+
+                  const update = {
+                        $set: {
+                              name: updated_product.name,
+                              price: updated_product.price,
+                        },
+                  };
+                  const result = await products_collection.updateOne(
+                        query,
+                        update,
+                  );
+                  res.send(result);
+            });
+
+            // delete product
+            app.delete("/products/:id", async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: new ObjectId(id) };
+                  const result = await products_collection.deleteOne(query);
+                  res.send(result);
+            });
+
             // Send a ping to confirm a successful connection
             await client.db("admin").command({ ping: 1 });
             console.log("Successfully connected to MongoDB!");
