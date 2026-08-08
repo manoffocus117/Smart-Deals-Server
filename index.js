@@ -35,6 +35,21 @@ async function run() {
             const database = client.db("smart_deals_db");
             const products_collection = database.collection("products");
 
+            // get product
+            app.get("/products", async (req, res) => {
+                  const cursor = products_collection.find();
+                  const result = await cursor.toArray();
+                  res.send(result);
+            });
+
+            // get a product by id
+            app.get("/products/:id", async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: new ObjectId(id) };
+                  const result = await products_collection.findOne(query);
+                  res.send(result);
+            });
+
             // add products
             app.post("/products", async (req, res) => {
                   const new_product = req.body;
