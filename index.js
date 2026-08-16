@@ -153,6 +153,20 @@ async function run() {
             });
 
             // user related apis
+            // get all users data
+            app.get("/users", async (req, res) => {
+                  const cursor = users_collection.find();
+                  const result = await cursor.toArray();
+                  res.send(result);
+            });
+
+            // get user data by id
+            app.get("/users/:id", async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: new ObjectId(id) };
+                  const result = await users_collection.findOne(query);
+                  res.send(result);
+            });
             // insert user data
             app.post("/users", async (req, res) => {
                   const new_user = req.body;
