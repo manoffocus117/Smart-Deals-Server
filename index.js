@@ -33,10 +33,15 @@ async function run() {
 
             // creating a database
             const database = client.db("smart_deals_db");
+
+            // creating a collection for products
             const products_collection = database.collection("products");
 
             // creating a collection for bids collection
             const bids_collection = database.collection("bids");
+
+            // creating a collection for user data
+            const user_collection = database.collection("users");
 
             // products related apis
             // get all product
@@ -144,6 +149,13 @@ async function run() {
                   const id = req.params.id;
                   const query = { _id: new ObjectId(id) };
                   const result = await bids_collection.deleteOne(query);
+                  res.send(result);
+            });
+
+            // user related apis
+            app.post("/users", async (req, res) => {
+                  const new_user = req.body;
+                  const result = await user_collection.insertOne(new_user);
                   res.send(result);
             });
 
