@@ -41,7 +41,7 @@ async function run() {
             const bids_collection = database.collection("bids");
 
             // creating a collection for user data
-            const user_collection = database.collection("users");
+            const users_collection = database.collection("users");
 
             // products related apis
             // get all product
@@ -153,9 +153,25 @@ async function run() {
             });
 
             // user related apis
+            // insert user data
             app.post("/users", async (req, res) => {
                   const new_user = req.body;
-                  const result = await user_collection.insertOne(new_user);
+                  const result = await users_collection.insertOne(new_user);
+                  res.send(result);
+            });
+
+            // update user data
+            app.patch("/users/:id", async (req, res) => {
+                  const id = req.params.id;
+                  const updated_user = req.body;
+                  const query = { _id: new ObjectId(id) };
+                  const update = {
+                        $set: updated_user,
+                  };
+                  const result = await users_collection.updateOne(
+                        query,
+                        update,
+                  );
                   res.send(result);
             });
 
