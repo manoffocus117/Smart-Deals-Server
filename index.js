@@ -170,8 +170,20 @@ async function run() {
             // insert user data
             app.post("/users", async (req, res) => {
                   const new_user = req.body;
-                  const result = await users_collection.insertOne(new_user);
-                  res.send(result);
+
+                  // checking existed user & insert user data
+                  const email = req.body.email;
+                  const query = { email: email };
+                  const existing_user = await users_collection.findOne(query);
+                  if (existing_user) {
+                        res.send({
+                              message: "user is already existed, do not need to insert again",
+                        });
+                  } else {
+                        const result =
+                              await users_collection.insertOne(new_user);
+                        res.send(result);
+                  }
             });
 
             // update user data
