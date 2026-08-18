@@ -80,6 +80,16 @@ async function run() {
                   res.send(result);
             });
 
+            // get latest products
+            app.get("/latest-products", async (req, res) => {
+                  const cursor = products_collection
+                        .find()
+                        .sort({ created_at: -1 })
+                        .limit(6);
+                  const result = await cursor.toArray();
+                  res.send(result);
+            });
+
             // add products
             app.post("/products", async (req, res) => {
                   const new_product = req.body;
