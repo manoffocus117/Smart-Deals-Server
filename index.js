@@ -162,6 +162,15 @@ async function run() {
                   res.send(result);
             });
 
+            // get bids for a product
+            app.get("/products/bids/:productId", async (req, res) => {
+                  const product_id = req.params.productId;
+                  const query = { product: product_id };
+                  const cursor = bids_collection.find(query);
+                  const result = await cursor.toArray();
+                  res.send(result);
+            });
+
             // user related apis
             // get all users data
             app.get("/users", async (req, res) => {
